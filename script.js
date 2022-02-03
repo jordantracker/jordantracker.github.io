@@ -34,6 +34,7 @@ fetch(
             dragableWaypoints: false,
             routeWhileDragging: false,
             show: false,
+            fitSelectedRoutes: false,
             lineOptions: {
                 addWaypoints: false
             },
@@ -41,7 +42,7 @@ fetch(
             // geocoder: L.Control.Geocoder.nominatim()
         }).addTo(map);
         currentLocMarker.setLatLng(waypoints[waypoints.length-1]).setZIndexOffset(2);
-        map.setView(waypoints[waypoints.length-1],13,{zoom: {animate: true}, pan: {animate: true, duration: 2, easeLinearity: 0.5}});
+        map.setView(waypoints[waypoints.length-1],11,{zoom: {animate: true}, pan: {animate: true, duration: 2, easeLinearity: 0.5}});
     });
 
 var baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}');

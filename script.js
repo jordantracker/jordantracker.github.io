@@ -10,14 +10,14 @@ var jordanIcon = L.icon({
 });
 
 var bedIcon = L.icon({
-    iconUrl: 'bed.png',
-    iconSize: [50,50],
-    iconAnchor: [25,25],
-    popupAnchor: [-50,-50]
+    iconUrl: 'sleep.png',
+    iconSize: [30,30],
+    iconAnchor: [15,15],
+    popupAnchor: [0,-15]
 });
 
 fetch(
-    "https://opensheet.elk.sh/1cC8Uyel5C20MYKRhzgqrWAc9QtFiVKj_ZPSIOIX-XoQ/2"
+    "https://opensheet.elk.sh/1V0RjANEotzZ9Bv8i7i4CF5bYSx4a_vEY21odED62l1Q/1"
   )
     .then((res) => res.json())
     .then((data) => {
@@ -25,7 +25,7 @@ fetch(
         data.forEach((row, key, arr) => {
             waypoints.push(L.latLng(row['Lat'],row['Long']));
             if (!Object.is(arr.length - 1, key)) {
-                L.marker([row['Lat'],row['Long']],{icon: bedIcon}).addTo(map);
+                L.marker([row['Lat'],row['Long']],{icon: bedIcon}).bindPopup(row['Text_address']).addTo(map);
             }
         });
         console.log(waypoints);
@@ -44,9 +44,23 @@ fetch(
         map.setView(waypoints[waypoints.length-1],13,{zoom: {animate: true}, pan: {animate: true, duration: 2, easeLinearity: 0.5}});
     });
 
-var map = L.map('map').setView([-31.9078188,115.8118231], 13);
+var baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}');
+var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
 
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}').addTo(map);
+var map = L.map('map', {
+    center: [-31.9078188,115.8118231],
+    zoom: 13,
+    layers: [satelliteLayer, baseLayer]
+});
+
+baseMaps = {
+    'Esri imagery': satelliteLayer,
+    'Esri worldmap': baseLayer
+}
+
+L.control.layers(baseMaps).addTo(map);
 
 currentLocMarker = L.marker([-31.9078188,115.8118231], {icon: jordanIcon});
 currentLocMarker.bindPopup("<b>Where is Jordan now?</b><br>Here he is!")

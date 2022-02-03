@@ -3,8 +3,8 @@ var control;
 var prevLocs = {};
 
 var jordanIcon = L.icon({
-    iconUrl: 'jordan120.png',
-    iconSize: [120, 78],
+    iconUrl: 'jordanIcon.png',
+    iconSize: [120, 77],
     iconAnchor: [100, 60],
     popupAnchor: [-50,-60]
 });
